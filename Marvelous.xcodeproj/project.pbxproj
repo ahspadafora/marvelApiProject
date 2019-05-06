@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0463706C2280ECB7005C3424 /* MarvelCharactersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463706B2280ECB7005C3424 /* MarvelCharactersViewModel.swift */; };
 		0486B31B21B61113002C142F /* UIActivityIndicator+toggleAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486B31A21B61113002C142F /* UIActivityIndicator+toggleAnimation.swift */; };
 		0486B32921B650E0002C142F /* MarvelCharacterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486B32821B650E0002C142F /* MarvelCharacterTableViewCell.swift */; };
 		5E8C4F162196037D00168080 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C4F152196037D00168080 /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0463706B2280ECB7005C3424 /* MarvelCharactersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelCharactersViewModel.swift; sourceTree = "<group>"; };
 		0486B31A21B61113002C142F /* UIActivityIndicator+toggleAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicator+toggleAnimation.swift"; sourceTree = "<group>"; };
 		0486B32821B650E0002C142F /* MarvelCharacterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelCharacterTableViewCell.swift; sourceTree = "<group>"; };
 		5E6CA8472196258D00065B50 /* ReadMe.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = ReadMe.rtf; sourceTree = "<group>"; };
@@ -86,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0463706A2280E812005C3424 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0463706B2280ECB7005C3424 /* MarvelCharactersViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		0486B31C21B6119A002C142F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +211,7 @@
 		5E8C4F142196037D00168080 /* Marvelous */ = {
 			isa = PBXGroup;
 			children = (
+				0463706A2280E812005C3424 /* ViewModels */,
 				5E6CA8472196258D00065B50 /* ReadMe.rtf */,
 				0486B32521B6134D002C142F /* App */,
 				0486B31D21B611C6002C142F /* Models */,
@@ -369,6 +380,7 @@
 				5E8C4F4921960DFF00168080 /* MarvelDataModels.swift in Sources */,
 				0486B31B21B61113002C142F /* UIActivityIndicator+toggleAnimation.swift in Sources */,
 				5E8C4F44219603B200168080 /* MarvelAPI.swift in Sources */,
+				0463706C2280ECB7005C3424 /* MarvelCharactersViewModel.swift in Sources */,
 				0486B32921B650E0002C142F /* MarvelCharacterTableViewCell.swift in Sources */,
 				5E8C4F4B219615A700168080 /* String+md5Hash.swift in Sources */,
 			);
