@@ -43,20 +43,13 @@ class MarvelCharactersTableViewController: UIViewController, UITableViewDelegate
     // MARK: - IBOutlets
     
     @IBOutlet weak var whiteBackgroundView: UIView!
-    
     @IBOutlet weak var characterTableView: UITableView!
     
     // MARK: - Properties
-    private let marvelAPI = MarvelAPI()
-    private var characters = [Character]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.characterTableView.reloadData()
-            }
-        }
-    }
-    private let activityIndicator = UIActivityIndicatorView(style: .gray)
     
+    let marvelCharacterViewModels = MarvelCharactersViewModel()
+    
+    private let activityIndicator = UIActivityIndicatorView(style: .gray)
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -66,37 +59,12 @@ class MarvelCharactersTableViewController: UIViewController, UITableViewDelegate
         super.viewDidLoad()
         whiteBackgroundView.layer.cornerRadius = 8.0
         setUpActivityIndicator()
-        loadMarvelCharactersFromApi()
-    }
-    
-    // MARK: - Setup Methods
-    private func loadMarvelCharactersFromApi() {
-        // start activity indicator and start loadingCharacters from API
-        
-        activityIndicator.toggleAnimation()
-        
-        marvelAPI.loadCharacters(offset: characters.count, limit: 50, success: { [weak self] (response) in
-            guard let self = self else { return }
-            
-            // download each img for each character before updating tableView by using a DispatchGroup
-            let imageGetterDispatchGroup = DispatchGroup()
-            DispatchQueue.global(qos: .default).async {
-                
-                for marvelCharacter in response.results {
-                    imageGetterDispatchGroup.enter()
-                    guard let marvelCharacterImgUrl = marvelCharacter.thumbnail?.url else { return }
-                    CharacterImagesManager.shared.cacheImage(from: marvelCharacterImgUrl, callback: { (_) in
-                        imageGetterDispatchGroup.leave()
-                    })
-                }
-                imageGetterDispatchGroup.notify(queue: DispatchQueue.main, execute: {
-                    self.characters += response.results
-                    self.activityIndicator.toggleAnimation()
-                })
+        self.activityIndicator.startAnimating()
+        marvelCharacterViewModels.loadMarvelCharactersFromApi { (error) in
+            DispatchQueue.main.async {
+                self.characterTableView.reloadData()
+                self.activityIndicator.stopAnimating()
             }
-            
-        }) { (error) in
-            self.activityIndicator.toggleAnimation()
         }
     }
     
@@ -111,16 +79,20 @@ class MarvelCharactersTableViewController: UIViewController, UITableViewDelegate
 extension MarvelCharactersTableViewController {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return characters.count
+        return self.marvelCharacterViewModels.getCharacterCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "marvelCharacterCell", for: indexPath) as? MarvelCharacterTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "marvelCharacterCell", for: indexPath) as? MarvelCharacterTableViewCell, let characterForCell = self.marvelCharacterViewModels.getCharcterForIndex(indexPath: indexPath.row) else { fatalError() }
         
-        cell.character = characters[indexPath.row]
+        cell.character = characterForCell
         
-        if indexPath.row == characters.count - 1 && characters.count != 0 {
-            loadMarvelCharactersFromApi()
+        if indexPath.row == self.marvelCharacterViewModels.getCharacterCount() - 1 && self.marvelCharacterViewModels.getCharacterCount() != 0 {
+            self.activityIndicator.startAnimating()
+            self.marvelCharacterViewModels.loadMarvelCharactersFromApi { (error) in
+                self.activityIndicator.stopAnimating()
+                self.characterTableView.reloadData()
+            }
         }
         
         return cell
